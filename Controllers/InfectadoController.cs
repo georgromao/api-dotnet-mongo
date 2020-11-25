@@ -1,3 +1,4 @@
+using System;
 using ApiMongo.Data.Collections;
 using ApiMongo.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -36,5 +37,15 @@ namespace ApiMongo.Controllers
 
             return Ok(infectados);
         }
+        [HttpPut]
+        public ActionResult AtualizarInfectado([FromBody] InfectadoDto dto)
+        {
+            var infectado = new Infectado(dto.DataNascimento, dto.Sexo, dto.Latitude, dto.Longitude);
+
+            _infectadosCollection.UpdateOne(Builders<Infectado>.Filter.Where(_ => _.DataNascimento == dto.DataNascimento), Builders<Infectado>.Update.Set("sexo", dto.Sexo));
+
+            return Ok("Atualizado com sucesso");
+        }
+
     }
 }
